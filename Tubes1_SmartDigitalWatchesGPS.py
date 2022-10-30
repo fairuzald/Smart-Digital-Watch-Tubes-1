@@ -26,22 +26,22 @@ def light_button(frame):
         text = "Light", 
         command = light, 
         activeforeground = "grey", 
-        cursor = "target")
+        cursor = "hand2")
     light_button.place(x=250, y=240)
 
 # Tombol ganti jam_tangan
 def next_button(frame, words):
-    button = tk.Button(frame, cursor="target", text=words, command=frame_mode)
+    button = tk.Button(frame, cursor="hand2", text=words, command=frame_mode)
     button.place(x=250, y=360)
 
 # Tombol reset 
 def reset_button(frame, task):
-    reset_button = tk.Button(frame, cursor="target", text="reset", command=task)
+    reset_button = tk.Button(frame, cursor="hand2", text="reset", command=task)
     reset_button.place(x=616,y=360)
 
 # Tombol start
 def start_button(frame, task):
-    start_button = tk.Button(frame, cursor="target", text="start", command=task)
+    start_button = tk.Button(frame, cursor="hand2", text="start", command=task)
     start_button.place(x=616, y=240)
 
 # FUNGSI GLOBAL UNTUK SEMUA FRAME
@@ -110,12 +110,13 @@ def update():
     digital_label.config(text= jam + ":" + menit + ":" + detik)
     # kasus ketika nilai jam = nilai alarm
     for j in alarm_set_time:
-        if j==label_digital:
+        if j == label_digital:
             winsound.PlaySound("alarm.wav",winsound.SND_ASYNC)
             stop_button1.place(x=250,y=240)
             stop_button2.place(x=250,y=240)
             stop_button3.place(x=250,y=240)
             stop_button4.place(x=250,y=240)
+            
     digital_label.after(1000, update)
 
 #untuk menampilkan hari ketika dipencet start atau reset  
@@ -145,7 +146,7 @@ count_start_stopwatch = 1
 # Aksi ketika tombol start untuk stopwatch di pencet
 def start_stopwatch():
     global count_start_stopwatch, run_stopwatch
-    if count_start_stopwatch==1:
+    if count_start_stopwatch == 1:
         if not run_stopwatch:
             count_start_stopwatch+=1
             update_stopwatch()
@@ -180,7 +181,7 @@ def update_stopwatch():
     global hours_stopwatch, minutes_stopwatch, seconds_stopwatch, milisecs_stopwatch
     milisecs_stopwatch += 1
     if milisecs_stopwatch == 100:
-        seconds_stopwatch+=1
+        seconds_stopwatch += 1
         milisecs_stopwatch=0
     if seconds_stopwatch == 60:
         minutes_stopwatch += 1
@@ -200,24 +201,24 @@ jam_timer = 0
 menit_timer = 0
 detik_timer = 0
 timer_digit = 'J'
-status_timer=False
-list_mode_timer=['J','M',"D","Switch"]
+status_timer = False
+list_mode_timer = ['J','M',"D","Switch"]
 count_switch_timer=1
 
 def switch_timer():
     global list_mode_timer, timer_digit, blink_colours
     global count_switch_timer
-    count_switch_timer+=1
-    if count_switch_timer==2: #mode menit
+    count_switch_timer += 1
+    if count_switch_timer == 2: #mode menit
         timer_digit =list_mode_timer[1]
-    elif count_switch_timer==3: #mode detik
+    elif count_switch_timer == 3: #mode detik
         timer_digit=list_mode_timer[2]
-    elif count_switch_timer==4: #mode mulai countdown
+    elif count_switch_timer == 4: #mode mulai countdown
         timer_digit=list_mode_timer[3]
         timer_jam_label.config(foreground='black')
         timer_menit_label.config(foreground='black')
         timer_detik_label.config(foreground='black')
-    elif count_switch_timer==5: #mode jam
+    elif count_switch_timer == 5: #mode jam
         timer_digit=list_mode_timer[0]
         reset_timer()
         blink_timer(0)
@@ -229,28 +230,28 @@ def add_timer():
     global timer_digit, jam_timer,menit_timer,detik_timer
     global count_start_timer, run_timer, status_timer
     if timer_digit == 'J':
-        jam_timer+=1
+        jam_timer += 1
         if jam_timer == 24:
             jam_timer=0 
     if timer_digit=='M':
-        menit_timer+=1
+        menit_timer += 1
         if menit_timer == 60:
             menit_timer=0
-    if timer_digit=='D':
-        detik_timer+=1
-        if detik_timer==60:
+    if timer_digit == 'D':
+        detik_timer += 1
+        if detik_timer == 60:
             detik_timer=0
-    if timer_digit=="Switch":
+    if timer_digit == "Switch":
         # jika belum diset maka ketika diset akan mulai hitung mundur
-        if status_timer==False:
+        if status_timer == False:
             status_timer = True
             if not run_timer:
-                count_start_timer+=1
+                count_start_timer += 1
                 start_timer_button.config(text="pause")
                 update_timer()
                 run_timer = True
         #jika udah hitung mundur pause
-        elif status_timer== True:
+        elif status_timer ==  True:
             status_timer = False
             if run_timer:
                 count_start_timer=1
@@ -266,17 +267,17 @@ def add_timer():
 blink_colours = ['black', 'grey']
 def blink_timer(colour_index):
     global timer_digit, blink_colours, list_mode_timer, timer_digit, status_timer
-    if timer_digit=="J":
+    if timer_digit == "J":
         timer_jam_label.config(foreground = blink_colours[colour_index])
         timer_menit_label.config(foreground = blink_colours[0])
         timer_detik_label.config(foreground = blink_colours[0])
         timer_jam_label.after(200, blink_timer, 1 - colour_index)
-    elif timer_digit=="M":
+    elif timer_digit == "M":
         timer_menit_label.config(foreground = blink_colours[colour_index])
         timer_jam_label.config(foreground = blink_colours[0])
         timer_detik_label.config(foreground = blink_colours[0])
         timer_jam_label.after(200, blink_timer, 1 - colour_index)
-    elif timer_digit=="D":
+    elif timer_digit == "D":
         timer_detik_label.config(foreground = blink_colours[colour_index])
         timer_menit_label.config(foreground = blink_colours[0])
         timer_jam_label.config(foreground = blink_colours[0])
@@ -302,12 +303,10 @@ def reset_timer():
 
 # update_timer untuk prosessing ketike timer dimulai
 def update_timer():
-    global jam_timer, menit_timer, detik_timer
-    times_timer=int(jam_timer)*3600+int(menit_timer)*60+int(detik_timer)
-    if times_timer>0:
-        times_timer-=1
-    if times_timer==0:    
-        winsound.PlaySound("timer.wav",winsound.SND_ASYNC)
+    global jam_timer, menit_timer, detik_timer,update_timers
+    times_timer = int(jam_timer)*3600+int(menit_timer)*60+int(detik_timer)
+    if times_timer > 0:
+        times_timer -= 1
     jam_timer=times_timer//3600
     menit_timer=(times_timer%3600)//60
     detik_timer=(times_timer%3600)%60
@@ -315,9 +314,15 @@ def update_timer():
     timer_menit_label.config(text=f':{menit_timer:02}')
     timer_detik_label.config(text=f':{detik_timer:02}')
     count_down_label.config(text=f'{jam_timer:02}+{menit_timer:02}+{detik_timer:02}')
-    global update_timers
+    if times_timer == 0:    
+        winsound.PlaySound("timer.wav",winsound.SND_ASYNC)
+        start_timer_button.config(text="start")
+        timer_jam_label.config(text=f'{jam_timer:02}')
+        timer_menit_label.config(text=f':{menit_timer:02}')
+        timer_detik_label.config(text=f':{detik_timer:02}')
+        update_timers = count_down_label.after(1000, skip)
     # selama nilai hitung mundur belum 0 selalu cek
-    if times_timer>0:
+    if times_timer > 0:
         update_timers = count_down_label.after(1000, update_timer)
         
 # BAGIAN AKSI ATAU FUNGSI UNTUK MODE ALARM
@@ -328,25 +333,24 @@ jam_alarm = 0
 menit_alarm = 0
 detik_alarm = 0
 mode_digit = 'J1'
-count_switch=1
-
+count_switch = 1
 list_mode=['J1','M1','D1',"Switch1", "J2", 'M2','D2','Switch2']
 
 # fungsi untuk beralih ke komponen waktu yang lain
 def switch_alarm():
     global list_mode, count_switch, mode_digit
-    count_switch+=1
-    if count_switch==2: #menit alarm 1
+    count_switch += 1
+    if count_switch == 2: #menit alarm 1
         mode_digit=list_mode[1]
-    elif count_switch==3: #detik alarm 1
+    elif count_switch == 3: #detik alarm 1
         mode_digit=list_mode[2]
-    elif count_switch==4: #set alarm 1
+    elif count_switch == 4: #set alarm 1
         mode_digit=list_mode[3]
         status_alm_label1.place(x=430,y=312)
         alarm_jam_label.place_forget()
         alarm_menit_label.place_forget()
         alarm_detik_label.place_forget()
-    elif count_switch==5: #jam alarm 2
+    elif count_switch == 5: #jam alarm 2
         mode_digit=list_mode[4]
         status_alm_label1.place_forget()
         alarm_jam_label.place(x=402,y=312)
@@ -354,29 +358,29 @@ def switch_alarm():
         alarm_detik_label.place(x=462,y=312)
         blink(0)
         alm.config(text="ALM2", font=('digital-7', 10))
-    elif count_switch==6: #menit alarm 2
+    elif count_switch == 6: #menit alarm 2
         mode_digit=list_mode[5]
-    elif count_switch==7: #detik alarm 2
+    elif count_switch == 7: #detik alarm 2
         mode_digit=list_mode[6]
-    elif count_switch==8:  #set alarm 2
-        mode_digit=list_mode[7]
+    elif count_switch == 8:  #set alarm 2
+        mode_digit = list_mode[7]
         status_alm_label2.place(x=430,y=312)
         alarm_jam_label.place_forget()
         alarm_menit_label.place_forget()
         alarm_detik_label.place_forget()
-    elif count_switch==9: #jam alarm 1
-        mode_digit=list_mode[0]
+    elif count_switch == 9: #jam alarm 1
+        mode_digit = list_mode[0]
         blink(0)
-        count_switch=1
+        count_switch = 1
         status_alm_label2.place_forget()
         alarm_jam_label.place(x=402,y=312)
         alarm_menit_label.place(x=430,y=312)
         alarm_detik_label.place(x=462,y=312)
         alm.config(text="ALM1", font=('digital-7', 11))
 
-status_alarm1=False
-status_alarm2=False
-alarm_set_time=["" for i in range(2)]
+status_alarm1 = False
+status_alarm2 = False
+alarm_set_time = ["" for i in range(2)]
 # fungsi untuk tindakan menambah komponen waktu
 def add_alarm():
     global mode_digit, alarm_label, set_new, status_alarm1, status_alarm2
@@ -384,34 +388,34 @@ def add_alarm():
     set_new=f'{jam_alarm:02}:{menit_alarm:02}:{detik_alarm:02}'
     mode=mode_digit
     if mode == 'J1' or mode == 'J2':
-        jam_alarm+=1
+        jam_alarm += 1
         if jam_alarm == 24:
             jam_alarm=0
-    if mode=='M1' or mode == 'M2':
-        menit_alarm+=1
+    if mode == 'M1' or mode == 'M2':
+        menit_alarm += 1
         if menit_alarm == 60:
             menit_alarm=0
-    if mode=='D1' or mode == 'D2':
-        detik_alarm+=1
-        if detik_alarm==60:
+    if mode == 'D1' or mode == 'D2':
+        detik_alarm += 1
+        if detik_alarm == 60:
             detik_alarm=0
-    if mode=="Switch1":
-        if status_alarm1==False:
+    if mode == "Switch1":
+        if status_alarm1 == False:
             status_alm_label1.config(text="On")
             alarm_set_time[0]=set_new
             status_alarm1 = True
-        elif status_alarm1== True:
+        elif status_alarm1 ==  True:
             status_alm_label1.config(text="Off")
-            alarm_set_time[0]=""
+            alarm_set_time[0] = ""
             status_alarm1 = False
         print(alarm_set_time)
         update()
-    if mode=="Switch2":
-        if status_alarm2==False:
+    if mode == "Switch2":
+        if status_alarm2 == False:
             status_alm_label2.config(text="On")
             alarm_set_time[1]=set_new
             status_alarm2 = True
-        elif status_alarm2== True:
+        elif status_alarm2 ==  True:
             status_alm_label2.config(text="Off")
             alarm_set_time[1]=""
             status_alarm2 = False
@@ -436,17 +440,17 @@ flash_colours = ['black', 'grey']
 def blink(colour_index):
     global mode_list,mode,mode_digit
     mode=mode_digit
-    if mode=="J1" or mode=="J2":
+    if mode == "J1" or mode == "J2":
         alarm_jam_label.config(foreground = flash_colours[colour_index])
         alarm_menit_label.config(foreground = flash_colours[0])
         alarm_detik_label.config(foreground = flash_colours[0])
         alarm_jam_label.after(200, blink, 1 - colour_index)
-    elif mode=="M1" or mode=="M2":
+    elif mode == "M1" or mode == "M2":
         alarm_menit_label.config(foreground = flash_colours[colour_index])
         alarm_jam_label.config(foreground = flash_colours[0])
         alarm_detik_label.config(foreground = flash_colours[0])
         alarm_jam_label.after(200, blink, 1 - colour_index)
-    elif mode=="D1" or mode=="D2":
+    elif mode == "D1" or mode == "D2":
         alarm_detik_label.config(foreground = flash_colours[colour_index])
         alarm_menit_label.config(foreground = flash_colours[0])
         alarm_jam_label.config(foreground = flash_colours[0])
@@ -488,7 +492,9 @@ miliseconds_label = Label(frame_stopwatch, text="00", bg="#c0dcd9", fg="black", 
 miliseconds_label.place(x=492,y=307)
 sto = Label(frame_stopwatch,pady=3, text="STO", bg="#c0dcd9", fg="black", font=('digital-7', 11))
 sto.place(x=489, y=258)
-start_button_stopwatch = tk.Button(frame_stopwatch, text="start", cursor="target",command=start_stopwatch)
+# imgg = PhotoImage(file="start.png")
+# image1 = imgg.subsample(5,7)
+start_button_stopwatch = tk.Button(frame_stopwatch, text="start", cursor="hand2",command=start_stopwatch)
 start_button_stopwatch.place(x=616,y=240)
 
 # Menu dan tombol timer
@@ -504,7 +510,7 @@ timer_menit_label.place(x=430,y=312)
 timer_detik_label = Label(frame_timer, text = ':00', bg="#c0dcd9", fg="black", font=("digital-7",20),foreground = blink_colours[0])
 timer_detik_label.place(x=462,y=312)
 blink_timer(0)
-start_timer_button = tk.Button(frame_timer, text="start", cursor="target",command=add_timer)
+start_timer_button = tk.Button(frame_timer, text="start", cursor="hand2",command=add_timer)
 start_timer_button.place(x=616,y=240)
 
 
@@ -523,10 +529,10 @@ alarm_detik_label.place(x=462,y=312)
 status_alm_label1 = Label(frame_alarm, text = 'Off', bg="#c0dcd9", fg="black", font=("digital-7",20),foreground = flash_colours[0])
 status_alm_label2 = Label(frame_alarm, text = 'Off', bg="#c0dcd9", fg="black", font=("digital-7",20),foreground = flash_colours[0])
 blink(0)
-stop_button1 = tk.Button(frame_watches, text="silent", cursor="target",command=stop_alarm)
-stop_button2 = tk.Button(frame_stopwatch, text="silent", cursor="target",command=stop_alarm)
-stop_button3 = tk.Button(frame_timer, text="silent", cursor="target",command=stop_alarm)
-stop_button4 = tk.Button(frame_alarm, text="silent", cursor="target",command=stop_alarm)
+stop_button1 = tk.Button(frame_watches, text="silent", cursor="hand2",command=stop_alarm)
+stop_button2 = tk.Button(frame_stopwatch, text="silent", cursor="hand2",command=stop_alarm)
+stop_button3 = tk.Button(frame_timer, text="silent", cursor="hand2",command=stop_alarm)
+stop_button4 = tk.Button(frame_alarm, text="silent", cursor="hand2",command=stop_alarm)
 
 
 # Main program
