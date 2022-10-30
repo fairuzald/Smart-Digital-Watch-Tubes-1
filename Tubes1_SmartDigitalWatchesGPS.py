@@ -11,9 +11,13 @@ ui.resizable(0,0)
 ui.title("Tugas Besar 1 : Smart Digital Watches")
 ui.geometry("900x640")
 ui.config(background="light grey")
+icon = PhotoImage(file = "icon.png")
+ui.iconphoto(False, icon)
 
 # BAGIAN UTAMA DISPLAY JAM TANGAN
 foto = PhotoImage(file="jam.png")
+button_image = PhotoImage(file="Button.png")
+
 def photo(frame):
     global foto
     label = Label(frame, image=foto)
@@ -24,25 +28,57 @@ def photo(frame):
 def light_button(frame):
     light_button = tk.Button(frame,
         text = "Light", 
+        fg = "#3994d7",
+        font=("Ethnocentric RG", 8),
+        compound='center',
+        relief=FLAT,
+        image = button_image,
+        activeforeground = "#e2e2e2", 
         command = light, 
-        activeforeground = "grey", 
         cursor = "hand2")
-    light_button.place(x=250, y=240)
+    light_button.place(x=227, y=240)
 
 # Tombol ganti jam_tangan
 def next_button(frame, words):
-    button = tk.Button(frame, cursor="hand2", text=words, command=frame_mode)
-    button.place(x=250, y=360)
+    button = tk.Button(frame,
+    fg = "#3994d7",
+    font=("Ethnocentric RG", 8),
+    compound='center',
+    image = button_image,
+    relief=FLAT,
+    activeforeground = "#e2e2e2", 
+    cursor="hand2",
+    text=words,
+    command=frame_mode)
+    button.place(x=227, y=356)
 
 # Tombol reset 
 def reset_button(frame, task):
-    reset_button = tk.Button(frame, cursor="hand2", text="reset", command=task)
-    reset_button.place(x=616,y=360)
+    reset_button = tk.Button(frame,
+    cursor="hand2",
+    text="reset",
+    image = button_image,
+    fg = "#3994d7",
+    font=("Ethnocentric RG", 8),
+    compound='center',
+    relief=FLAT,
+    activeforeground = "#e2e2e2", 
+    command=task)
+    reset_button.place(x=607, y=356)
 
 # Tombol start
 def start_button(frame, task):
-    start_button = tk.Button(frame, cursor="hand2", text="start", command=task)
-    start_button.place(x=616, y=240)
+    start_button = tk.Button(frame,
+    cursor="hand2",
+    text="start",
+    image = button_image,
+    fg = "#3994d7",
+    font=("Ethnocentric RG", 8),
+    compound='center',
+    relief=FLAT,
+    activeforeground = "#e2e2e2", 
+    command=task)
+    start_button.place(x=607, y=240)
 
 # FUNGSI GLOBAL UNTUK SEMUA FRAME
 
@@ -112,11 +148,8 @@ def update():
     for j in alarm_set_time:
         if j == label_digital:
             winsound.PlaySound("alarm.wav",winsound.SND_ASYNC)
-            stop_button1.place(x=250,y=240)
-            stop_button2.place(x=250,y=240)
-            stop_button3.place(x=250,y=240)
-            stop_button4.place(x=250,y=240)
-            
+            for i in stop_buttons:
+                i.place(x=227, y=240)
     digital_label.after(1000, update)
 
 #untuk menampilkan hari ketika dipencet start atau reset  
@@ -161,11 +194,10 @@ def start_stopwatch():
 
 # Aksi ketika tombol reset untuk stopwatch di pencet
 def reset_stopwatch():
-    global run_stopwatch, count_start_stopwatch
-    global hours_stopwatch, minutes_stopwatch, seconds_stopwatch, milisecs_stopwatch
+    global run_stopwatch, count_start_stopwatch, hours_stopwatch, minutes_stopwatch, seconds_stopwatch, milisecs_stopwatch
     #gagalkan update digit dan setting ke 0 
     if run_stopwatch:
-        count_start_stopwatch=1
+        count_start_stopwatch = 1
         stopwatch_label.after_cancel(update_stopwatch_time)
         run_stopwatch = False
     hours_stopwatch = 0
@@ -178,7 +210,7 @@ def reset_stopwatch():
 
 # Aksi untuk perhitungan penambahan digit stopwatch
 def update_stopwatch():
-    global hours_stopwatch, minutes_stopwatch, seconds_stopwatch, milisecs_stopwatch
+    global hours_stopwatch, minutes_stopwatch, seconds_stopwatch, milisecs_stopwatch, update_stopwatch_time
     milisecs_stopwatch += 1
     if milisecs_stopwatch == 100:
         seconds_stopwatch += 1
@@ -191,7 +223,6 @@ def update_stopwatch():
         minutes_stopwatch = 0
     stopwatch_label.config(text=f"{hours_stopwatch:02}:{minutes_stopwatch:02}:{seconds_stopwatch:02}")
     miliseconds_label.config(text=f"{milisecs_stopwatch:02}")
-    global update_stopwatch_time
     update_stopwatch_time = stopwatch_label.after(10, update_stopwatch)
 
 # BAGIAN AKSI ATAU  MODE TIMER
@@ -287,10 +318,11 @@ count_start_timer=1
 run_timer = False
 # fungsi untuk melakukan reset timer
 def reset_timer():
-    global run_timer, count_start_timer, jam_timer, menit_timer, detik_timer
+    global run_timer, count_start_timer,status_timer, jam_timer, menit_timer, detik_timer
     # hitung mundur dibatalkan dan setting ke nilai 0
     if run_timer:
         count_start_timer=1
+        status_timer = False
         count_down_label.after_cancel(update_timers)
         run_timer = False
     jam_timer = 0
@@ -341,21 +373,21 @@ def switch_alarm():
     global list_mode, count_switch, mode_digit
     count_switch += 1
     if count_switch == 2: #menit alarm 1
-        mode_digit=list_mode[1]
+        mode_digit = list_mode[1]
     elif count_switch == 3: #detik alarm 1
-        mode_digit=list_mode[2]
+        mode_digit = list_mode[2]
     elif count_switch == 4: #set alarm 1
-        mode_digit=list_mode[3]
-        status_alm_label1.place(x=430,y=312)
+        mode_digit = list_mode[3]
+        status_alm_label1.place(x=430, y=312)
         alarm_jam_label.place_forget()
         alarm_menit_label.place_forget()
         alarm_detik_label.place_forget()
     elif count_switch == 5: #jam alarm 2
-        mode_digit=list_mode[4]
+        mode_digit = list_mode[4]
         status_alm_label1.place_forget()
-        alarm_jam_label.place(x=402,y=312)
-        alarm_menit_label.place(x=430,y=312)
-        alarm_detik_label.place(x=462,y=312)
+        alarm_jam_label.place(x=402, y=312)
+        alarm_menit_label.place(x=430, y=312)
+        alarm_detik_label.place(x=462, y=312)
         blink(0)
         alm.config(text="ALM2", font=('digital-7', 10))
     elif count_switch == 6: #menit alarm 2
@@ -364,7 +396,7 @@ def switch_alarm():
         mode_digit=list_mode[6]
     elif count_switch == 8:  #set alarm 2
         mode_digit = list_mode[7]
-        status_alm_label2.place(x=430,y=312)
+        status_alm_label2.place(x=430, y=312)
         alarm_jam_label.place_forget()
         alarm_menit_label.place_forget()
         alarm_detik_label.place_forget()
@@ -373,9 +405,9 @@ def switch_alarm():
         blink(0)
         count_switch = 1
         status_alm_label2.place_forget()
-        alarm_jam_label.place(x=402,y=312)
-        alarm_menit_label.place(x=430,y=312)
-        alarm_detik_label.place(x=462,y=312)
+        alarm_jam_label.place(x=402, y=312)
+        alarm_menit_label.place(x=430, y=312)
+        alarm_detik_label.place(x=462, y=312)
         alm.config(text="ALM1", font=('digital-7', 11))
 
 status_alarm1 = False
@@ -408,7 +440,6 @@ def add_alarm():
             status_alm_label1.config(text="Off")
             alarm_set_time[0] = ""
             status_alarm1 = False
-        print(alarm_set_time)
         update()
     if mode == "Switch2":
         if status_alarm2 == False:
@@ -430,10 +461,8 @@ def add_alarm():
 # fungsi untuk bunyi alarm yang nyala  
 def stop_alarm():
     winsound.PlaySound(None, winsound.SND_PURGE)
-    stop_button1.place_forget()
-    stop_button2.place_forget()
-    stop_button3.place_forget()
-    stop_button4.place_forget()
+    for i in stop_buttons:
+        i.place_forget()
 
 flash_colours = ['black', 'grey']
 # fungsi untuk blink berkedip saat pindah mode komponen waktu
@@ -481,37 +510,35 @@ for i in (list_jam_tangan):
 
 # Menu dan frame utama
 digital_label = Label(frame_watches,width=11,pady=9, text="", bg="#c0dcd9", fg="black", justify="center", font=('digital-7', 20))
-digital_label.place(x=375,y=304) 
+digital_label.place(x=375, y=304) 
 day = Label(frame_watches, pady=3,text=time.strftime("%A")[:3], height=1, bg="#c0dcd9", fg="black", font=('digital-7', 11))
 day.place(x=489, y=258)
 
 # Menu dan tombol stopwatch
 stopwatch_label = Label(frame_stopwatch, text="00:00:00",width=11,pady=9, bg="#c0dcd9", fg="black", font=("digital-7",20))
-stopwatch_label.place(x=375,y=304)
+stopwatch_label.place(x=375, y=304)
 miliseconds_label = Label(frame_stopwatch, text="00", bg="#c0dcd9", fg="black", font=("digital-7",14))
-miliseconds_label.place(x=492,y=307)
+miliseconds_label.place(x=492, y=307)
 sto = Label(frame_stopwatch,pady=3, text="STO", bg="#c0dcd9", fg="black", font=('digital-7', 11))
 sto.place(x=489, y=258)
-# imgg = PhotoImage(file="start.png")
-# image1 = imgg.subsample(5,7)
-start_button_stopwatch = tk.Button(frame_stopwatch, text="start", cursor="hand2",command=start_stopwatch)
-start_button_stopwatch.place(x=616,y=240)
+start_button_stopwatch = tk.Button(frame_stopwatch, image = button_image, fg = "#3994d7", font = ("Ethnocentric RG", 8), compound = 'center', relief = FLAT, text = "start", activeforeground = "#e2e2e2", cursor = "hand2", command = start_stopwatch)
+start_button_stopwatch.place(x=607, y=240)
 
 # Menu dan tombol timer
 count_down_label = Label(frame_timer, text="00:00:00", width=10, bg="#c0dcd9", fg="black", font=("digital-7",20))
 ctd = Label(frame_timer, text="CTD", pady=3,bg="#c0dcd9", fg="black", font=('digital-7', 11))
 ctd.place(x=489, y=258)
 bg_timer_label = Label(frame_timer,width=20, padx=2,pady=15, bg="#c0dcd9")
-bg_timer_label.place(x=375,y=304)
+bg_timer_label.place(x=375, y=304)
 timer_jam_label = Label(frame_timer, text = '00', bg="#c0dcd9", fg="black", font=("digital-7",20),foreground = blink_colours[0])
-timer_jam_label.place(x=402,y=312)
+timer_jam_label.place(x=402, y=312)
 timer_menit_label = Label(frame_timer, text = ':00',bg="#c0dcd9", fg="black", font=("digital-7",20),foreground = blink_colours[0])
-timer_menit_label.place(x=430,y=312)
+timer_menit_label.place(x=430, y=312)
 timer_detik_label = Label(frame_timer, text = ':00', bg="#c0dcd9", fg="black", font=("digital-7",20),foreground = blink_colours[0])
-timer_detik_label.place(x=462,y=312)
+timer_detik_label.place(x=462, y=312)
 blink_timer(0)
-start_timer_button = tk.Button(frame_timer, text="start", cursor="hand2",command=add_timer)
-start_timer_button.place(x=616,y=240)
+start_timer_button = tk.Button(frame_timer,image = button_image, fg = "#3994d7", font=("Ethnocentric RG", 8), compound='center', relief=FLAT, text="start", activeforeground = "#e2e2e2",  cursor="hand2",command=add_timer)
+start_timer_button.place(x=607, y=240)
 
 
 # Menu dan tombol alarm
@@ -519,22 +546,21 @@ alarm_label = Label(frame_alarm, text="00:00:00", width=10, bg="#c0dcd9", fg="bl
 alm = Label(frame_alarm,pady=2, text="ALM1", bg="#c0dcd9", fg="black", font=('digital-7', 11))
 alm.place(x=488, y=260)
 bg_alarm_label = Label(frame_alarm,width=20, padx=2,pady=15, bg="#c0dcd9")
-bg_alarm_label.place(x=375,y=304)
+bg_alarm_label.place(x=375, y=304)
 alarm_jam_label = Label(frame_alarm, text = '00', bg="#c0dcd9", fg="black", font=("digital-7",20),foreground = flash_colours[0])
-alarm_jam_label.place(x=402,y=312)
+alarm_jam_label.place(x=402, y=312)
 alarm_menit_label = Label(frame_alarm, text = ':00',bg="#c0dcd9", fg="black", font=("digital-7",20),foreground = flash_colours[0])
-alarm_menit_label.place(x=430,y=312)
+alarm_menit_label.place(x=430, y=312)
 alarm_detik_label = Label(frame_alarm, text = ':00', bg="#c0dcd9", fg="black", font=("digital-7",20),foreground = flash_colours[0])
-alarm_detik_label.place(x=462,y=312)
+alarm_detik_label.place(x=462, y=312)
 status_alm_label1 = Label(frame_alarm, text = 'Off', bg="#c0dcd9", fg="black", font=("digital-7",20),foreground = flash_colours[0])
 status_alm_label2 = Label(frame_alarm, text = 'Off', bg="#c0dcd9", fg="black", font=("digital-7",20),foreground = flash_colours[0])
 blink(0)
-stop_button1 = tk.Button(frame_watches, text="silent", cursor="hand2",command=stop_alarm)
-stop_button2 = tk.Button(frame_stopwatch, text="silent", cursor="hand2",command=stop_alarm)
-stop_button3 = tk.Button(frame_timer, text="silent", cursor="hand2",command=stop_alarm)
-stop_button4 = tk.Button(frame_alarm, text="silent", cursor="hand2",command=stop_alarm)
-
-
+stop_button1 = tk.Button(frame_watches, image = button_image, fg = "#3994d7", font=("Ethnocentric RG", 8), compound='center', relief=FLAT, activeforeground = "#e2e2e2", text="silent", cursor="hand2",command=stop_alarm)
+stop_button2 = tk.Button(frame_stopwatch, image = button_image, fg = "#3994d7", font=("Ethnocentric RG", 8), compound='center', relief=FLAT, activeforeground = "#e2e2e2", text="silent", cursor="hand2",command=stop_alarm)
+stop_button3 = tk.Button(frame_timer, image = button_image, fg = "#3994d7", font=("Ethnocentric RG", 8), compound='center', relief=FLAT, activeforeground = "#e2e2e2", text="silent", cursor="hand2",command=stop_alarm)
+stop_button4 = tk.Button(frame_alarm, image = button_image, fg = "#3994d7", font=("Ethnocentric RG", 8), compound='center', relief=FLAT, activeforeground = "#e2e2e2", text="silent", cursor="hand2",command=stop_alarm) 
+stop_buttons = [stop_button1,stop_button2, stop_button3, stop_button4]
 # Main program
 frame_watches.pack(fill="both", expand="True")
 
